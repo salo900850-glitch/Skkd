@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>CREATOR FITNESS — Техника упражнений</title>
+<style>
+:root{--bg:#0b1220;--panel:#131f32;--panel2:#1a2940;--text:#f4f7fb;--muted:#a9b7ca;--accent:#72e0b2;--line:#2a3b54}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#0b1220,#111c2d);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:24px 18px 18px;max-width:980px;margin:auto}h1{font-size:25px;margin:0 0 6px;letter-spacing:.5px}header p{margin:0;color:var(--muted)}
+main{max-width:980px;margin:auto;padding:0 14px 40px;display:grid;grid-template-columns:280px 1fr;gap:14px}
+.panel,.detail{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tab{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:8px 10px;border-radius:10px;font-weight:650}.tab.active{background:var(--accent);color:#10251d;border-color:var(--accent)}
+.exercise-list{display:grid;gap:7px;max-height:65vh;overflow:auto}.exercise{width:100%;text-align:left;border:1px solid var(--line);background:transparent;color:var(--text);padding:11px;border-radius:11px}.exercise.active{border-color:var(--accent);background:#1b3440}.exercise small{display:block;color:var(--muted);margin-top:3px}
+.detail h2{margin:0 0 4px;font-size:23px}.meta{color:var(--accent);font-weight:700;margin-bottom:12px}
+.visual{background:#0b1524;border:1px solid var(--line);border-radius:14px;padding:10px;margin:10px 0 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pose{min-width:0;text-align:center;color:var(--muted);font-size:13px}.pose svg{width:100%;height:150px;display:block}.pose b{color:var(--text)}
+.steps{padding-left:22px;line-height:1.55}.steps li{padding:4px 0}.mistakes{background:#202b3e;border-left:3px solid #f0bd66;border-radius:8px;padding:11px 13px;margin-top:12px}.mistakes b{color:#ffd38c}.tip{color:var(--muted);font-size:14px;line-height:1.5}
+button{cursor:pointer}button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.controls{display:flex;gap:8px;margin-top:14px}.controls button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700;background:var(--accent);color:#10251d}.controls button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+@media(max-width:700px){main{grid-template-columns:1fr}.exercise-list{max-height:240px;grid-template-columns:1fr 1fr}.exercise{font-size:13px;padding:9px}.detail h2{font-size:21px}}
+</style>
+</head>
+<body>
+<header><h1>CREATOR FITNESS</h1><p>Техника упражнений · понятные шаги и наглядные схемы</p></header>
+<main>
+<aside class="panel">
+ <div class="tabs" id="tabs"></div>
+ <div class="exercise-list" id="list"></div>
+</aside>
+<section class="detail" id="detail" aria-live="polite"></section>
+</main>
+<script>
+const data=[
+{day:"Пн · Верх",items:[
+["Жим гантелей лёжа","Грудь · 4×12","Ляг на спину, согни колени и поставь стопы на пол.","Держи гантели над грудью, ладони направлены вперёд.","Плавно опускай локти вниз и немного в стороны.","Выжми гантели вверх, не сталкивая их друг с другом.","Не прогибай поясницу чрезмерно; не опускай локти слишком низко.","Двигайся плавно. Если нет устойчивой скамьи, выполняй на полу."],
+["Жим гантелей над головой","Плечи · 3×10","Встань устойчиво, стопы примерно на ширине плеч.","Подними гантели к уровню плеч, запястья держи ровно.","Выжми гантели вверх без рывка.","Опусти обратно к плечам под контролем.","Не прогибай поясницу и не толкай вес всем телом.","Если 8 кг слишком тяжело, делай по одной руке или без веса."],
+["Разведение гантелей в стороны","Плечи · 3×12","Встань прямо, слегка согни локти.","Подними руки в стороны примерно до уровня плеч.","На секунду остановись и медленно опусти руки.","Не раскачивай корпус и не поднимай плечи к ушам.","Выбирай лёгкую нагрузку: это упражнение не требует больших весов."],
+["Французский жим одной гантели","Трицепс · 3×12","Сядь или встань устойчиво, возьми одну гантель двумя руками.","Подними её над головой, локти направь вперёд.","Согни локти, опуская гантель за голову.","Разогни руки и верни гантель вверх.","Не разводи локти широко и не прогибай спину."],
+["Отжимания","Грудь · 3×10–15","Поставь ладони немного шире плеч.","Вытяни тело в одну линию от головы до пяток.","Согни локти и опускай грудь к полу.","Оттолкнись и вернись в исходное положение.","Не провисай в пояснице. Можно отжиматься с колен или от устойчивой высокой опоры."]
+]},
+{day:"Вт · Ноги",items:[
+["Приседания с гантелью","Ноги · 4×15","Держи одну гантель у груди, стопы чуть шире таза.","Отведи таз назад и согни колени.","Опускайся настолько, насколько можешь без потери ровной спины.","Оттолкнись всей стопой и встань.","Колени направляй туда же, куда носки; не округляй спину."],
+["Румынская тяга","Задняя поверхность бедра · 3×12","Встань с гантелями перед бёдрами, колени слегка согнуты.","Отведи таз назад, наклоняя корпус с ровной спиной.","Опускай гантели вдоль ног до комфортного натяжения сзади бёдер.","Напряги ягодицы и вернись в исходное положение.","Не превращай движение в присед и не округляй поясницу."],
+["Выпады назад","Ноги · 3×12 на каждую","Встань ровно, стопы на ширине таза.","Сделай шаг назад и мягко опустись вниз.","Передняя стопа полностью стоит на полу.","Оттолкнись передней ногой и вернись.","Сначала освой движение без гантелей; держись за опору при необходимости."],
+["Подъёмы на носки","Икры · 4×20","Встань прямо, держись за стену или устойчивую опору.","Поднимись на носки, не заваливая стопы наружу.","Медленно опустись вниз.","Не пружинь и не торопись; работай в комфортной амплитуде."],
+["Планка","Кор · 3×40 сек","Поставь предплечья на пол, локти под плечами.","Вытяни ноги и опирайся на носки.","Напряги живот и ягодицы, сохраняя ровную линию тела.","Дыши спокойно и закончи подход до потери техники.","Не задерживай дыхание и не провисай в пояснице."],
+["Скручивания","Пресс · 3×15","Ляг на спину, согни колени, стопы на полу.","Руки держи у груди или легко у висков.","Приподними плечи, направляя рёбра к тазу.","Медленно опустись обратно.","Не тяни голову руками и не делай резких рывков."]
+]},
+{day:"Чт · Спина",items:[
+["Тяга двух гантелей в наклоне","Спина · 4×12","Стопы на ширине таза, колени слегка согнуты.","Отведи таз назад и наклони корпус с ровной спиной.","Подтяни гантели к нижним рёбрам, локти веди назад.","Медленно опусти гантели.","Не округляй спину и не дёргай весом."],
+["Тяга одной гантели","Спина · 3×12 на руку","Обопрись свободной рукой о устойчивую поверхность.","Спина ровная, корпус наклонён.","Подтяни гантель к тазу, локоть близко к корпусу.","Плавно опусти и повтори другой рукой.","Не вращай корпус и не тяни плечо к уху."],
+["Подъём гантелей на бицепс","Бицепс · 3×12","Встань ровно, руки вдоль тела, локти рядом с корпусом.","Согни руки и подними гантели к плечам.","Медленно опусти, не раскачивая корпус.","Не помогай себе спиной; если тяжело, делай по одной руке."],
+["Молотки","Бицепс и предплечья · 3×12","Держи гантели вдоль тела, ладони смотрят друг на друга.","Согни локти и подними гантели к плечам.","Опускай плавно, сохраняя нейтральный хват.","Не раскачивайся и не бросай гантели вниз."],
+["Супермен","Мышцы спины · 3×15","Ляг на живот, руки вытянуты вперёд.","Слегка приподними руки и грудь, сохраняя шею нейтральной.","Задержись на короткий момент.","Плавно опустись на пол.","Поднимайся невысоко; прекрати, если неприятно пояснице."]
+]},
+{day:"Сб · Всё тело",items:[
+["Ягодичный мост","Ягодицы · 3×15","Ляг на спину, согни колени, стопы поставь на пол.","Напряги ягодицы и подними таз.","В верхней точке корпус и бёдра образуют примерно прямую линию.","Медленно опусти таз.","Не переразгибай поясницу; не ставь стопы слишком далеко."],
+["Повтор: приседания с гантелью","Ноги · 3×12","Держи гантель у груди, стопы чуть шире таза.","Отведи таз назад и согни колени.","Сохраняй ровную спину и устойчивую стопу.","Встань, отталкиваясь всей стопой.","Работай без спешки."],
+["Повтор: жим гантелей лёжа","Грудь · 3×12","Ляг на пол, колени согнуты, стопы на полу.","Держи гантели над грудью.","Опускай локти под контролем.","Выжми гантели вверх.","Не ударяй гантели друг о друга."],
+["Повтор: тяга гантелей","Спина · 3×12","Наклонись с ровной спиной и мягкими коленями.","Подтяни гантели к нижним рёбрам.","Сведи лопатки без рывка.","Медленно опусти.","Если спина устаёт раньше рук, остановись и проверь положение."]
+]}];
+let dayIndex=0, itemIndex=0;
+function figure(kind,phase){
+ const arm1=phase===0?"M92 82 L72 111 L62 132":"M92 82 L78 65 L70 42";
+ const arm2=phase===0?"M108 82 L128 111 L138 132":"M108 82 L122 65 L130 42";
+ return `<svg viewBox="0 0 200 160" role="img" aria-label="Условная схема положения тела"><path d="M18 140H182" stroke="#40536e" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="28" r="12" fill="#72e0b2"/><path d="M100 41 L100 88 M100 54 L${phase===0?"72 65":"78 65"} M100 54 L${phase===0?"128 65":"122 65"} M100 88 L82 132 M100 88 L118 132" stroke="#e9f1fa" stroke-width="7" stroke-linecap="round" fill="none"/><path d="${arm1} M${phase===0?"62 132":"70 42"} L${phase===0?"52 136":"66 30"} M${arm2} M${phase===0?"138 132":"130 42"} L${phase===0?"148 136":"134 30"}" stroke="#e9f1fa" stroke-width="6" stroke-linecap="round" fill="none"/><rect x="${phase===0?42:60}" y="${phase===0?128:22}" width="16" height="9" rx="3" fill="#72e0b2"/><rect x="${phase===0?142:124}" y="${phase===0?128:22}" width="16" height="9" rx="3" fill="#72e0b2"/></svg>`;
+}
+function render(){
+ document.getElementById('tabs').innerHTML=data.map((d,i)=>`<button class="tab ${i===dayIndex?'active':''}" onclick="dayIndex=${i};itemIndex=0;render()">${d.day}</button>`).join('');
+ const items=data[dayIndex].items;
+ document.getElementById('list').innerHTML=items.map((it,i)=>`<button class="exercise ${i===itemIndex?'active':''}" onclick="itemIndex=${i};render()">${it[0]}<small>${it[1]}</small></button>`).join('');
+ const x=items[itemIndex];
+ document.getElementById('detail').innerHTML=`<h2>${x[0]}</h2><div class="meta">${x[1]}</div>
+ <div class="visual"><div class="pose">${figure(x[0],0)}<b>Исходное положение</b></div><div class="pose">${figure(x[0],1)}<b>Фаза движения</b></div></div>
+ <h3>Как выполнять</h3><ol class="steps">${x.slice(2,-1).map(s=>`<li>${s}</li>`).join('')}</ol>
+ <div class="mistakes"><b>На что обратить внимание</b><br>${x[x.length-1]}</div>
+ <p class="tip">Схемы условные и показывают общую идею движения. Начинай с комфортного темпа и не используй вес, если не получается сохранять правильную технику. При боли прекрати упражнение.</p>
+ <div class="controls"><button class="secondary" onclick="move(-1)">← Предыдущее</button><button onclick="move(1)">Следующее →</button></div>`;
+}
+function move(dir){const len=data[dayIndex].items.length;itemIndex=(itemIndex+dir+len)%len;render()}
+render();
+</script>
+</body></html>
