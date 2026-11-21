@@ -1,0 +1,10 @@
+{
+  "name": "CREATOR FITNESS PRO",
+  "short_name": "Creator Fitness",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#09111f",
+  "theme_color": "#0b1220",
+  "description": "Техника домашних упражнений"
+}
